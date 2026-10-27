@@ -1,442 +1,837 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BuildWaivers | Contractor Contract Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Google Analytics / PostHog Tag Snippet -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_TRACKING_ID"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'YOUR_TRACKING_ID');
-      function trackPaywallTrigger() {
-        gtag('event', 'paywall_viewed', { 'event_category': 'monetization' });
-      }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildWaivers | Flagship Contractor Legal Engine & Waiver Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <style>
-        /* Tech-Giant Premium Aesthetic */
-        :root {
-            --primary: #0f172a;
-            --brand: #2563eb;
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-main: #334155;
-            --border-color: #cbd5e1;
-        }
+  <!-- Google Analytics 4 / PostHog Paywall Event Tracking Snippet -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_TRACKING_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'YOUR_TRACKING_ID');
+    function trackPaywallTrigger() {
+      gtag('event', 'paywall_viewed', {
+        'event_category': 'monetization',
+        'event_label': 'BuildWaivers_MarkII'
+      });
+    }
+  </script>
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  <style>
+    /* Flagship Tech-Giant Aesthetic Setup */
+    :root {
+      --carbon-bg: #12161c;
+      --graphite-card: #1c2128;
+      --graphite-border: #2d343f;
+      --soft-white-input: #f8fafc;
+      --input-text: #0f172a;
+      --brand-blue: #2563eb;
+      --brand-cyan: #06b6d4;
+      --text-light: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
 
-        /* Layout & SPA Responsiveness */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 1400px;
-            min-height: 100vh;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--carbon-bg);
+      /* Flowing Carbon Waves SVG Background Pattern */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%231a2029" fill-opacity="0.6" d="M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,208C672,213,768,171,864,154.7C960,139,1056,149,1152,170.7C1248,192,1344,224,1392,240L1440,256L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path><path fill="%23222935" fill-opacity="0.3" d="M0,64L48,96C96,128,192,192,288,192C384,192,480,128,576,117.3C672,107,768,149,864,165.3C960,181,1056,171,1152,144C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      color: var(--text-light);
+      margin: 0;
+      padding: 0;
+    }
 
-        @media (min-width: 992px) {
-            .app-container { flex-direction: row; }
-        }
+    /* Uber-Style Corporate Top Navigation Header */
+    .brand-header {
+      width: 100%;
+      background: #090c0f;
+      border-bottom: 1px solid var(--graphite-border);
+      padding: 1.25rem 2rem;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
 
-        /* Left Panel - Inputs */
-        .input-panel {
-            flex: 1;
-            padding: 2rem;
-            background: var(--bg-color);
-            overflow-y: auto;
-        }
+    .brand-logo-text {
+      font-size: 1.85rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--soft-white-input);
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
 
-        .card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            margin-bottom: 1.5rem;
-        }
+    .brand-badge {
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-        h2 { margin-top: 0; color: var(--primary); font-size: 1.25rem; }
-        
-        .input-group { margin-bottom: 1.25rem; }
-        .input-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .input-group input[type="text"], 
-        .input-group input[type="file"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
-        
-        .input-group input:focus { outline: none; border-color: var(--brand); }
+    /* Layout Container */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1440px;
+      margin: 0 auto;
+      min-height: calc(100vh - 80px);
+    }
 
-        /* Granular Toggles */
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .toggle-row:last-child { border-bottom: none; }
-        .toggle-label { font-weight: 500; font-size: 0.95rem; }
-        
-        /* Signature Canvas */
-        #signature-pad {
-            border: 1px dashed var(--border-color);
-            border-radius: 8px;
-            width: 100%;
-            height: 150px;
-            background: #f8fafc;
-            touch-action: none;
-            cursor: crosshair;
-        }
+    @media (min-width: 992px) {
+      .app-container { flex-direction: row; }
+    }
 
-        .btn-primary {
-            background: var(--brand);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 1rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-            margin-top: 1rem;
-        }
+    /* Left Panel - Inputs & Form Controls */
+    .input-panel {
+      flex: 1;
+      padding: 2rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
 
-        /* Right Panel - Live Preview */
-        .preview-panel {
-            flex: 1.2;
-            padding: 2rem;
-            background: #cbd5e1; /* Subdued background contrast */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
+    .card {
+      background: var(--graphite-card);
+      border: 1px solid var(--graphite-border);
+      padding: 1.75rem;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.75rem;
+    }
 
-        .a4-document {
-            background: white;
-            width: 100%;
-            max-width: 794px;
-            min-height: 1123px; /* A4 Ratio */
-            padding: 3rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            position: relative;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
+    .card h2 {
+      margin-top: 0;
+      color: var(--soft-white-input);
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        /* Professional Watermark */
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 4rem;
-            font-weight: 800;
-            color: rgba(0, 0, 0, 0.08);
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 10;
-        }
+    .input-group { margin-bottom: 1.25rem; }
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 
-        /* Document Styling */
-        .doc-header { display: flex; justify-content: space-between; border-bottom: 2px solid var(--primary); padding-bottom: 1rem; margin-bottom: 2rem; }
-        .doc-logo img { max-width: 150px; max-height: 80px; }
-        .doc-title { font-size: 2rem; font-weight: 700; color: var(--primary); text-align: right; }
-        .doc-meta { margin-bottom: 2rem; font-size: 1rem; line-height: 1.5; }
-        .doc-section { margin-bottom: 1.5rem; }
-        .doc-section h3 { font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; margin-bottom: 0.5rem; }
-        ol { padding-left: 1.5rem; }
-        ol li { margin-bottom: 0.5rem; line-height: 1.5; }
-        
-        .audit-trail {
-            margin-top: 3rem;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            background: #f8fafc;
-            font-size: 0.85rem;
-        }
+    .input-group input[type="text"],
+    .input-group input[type="file"],
+    .input-group select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background-color: var(--soft-white-input);
+      color: var(--input-text);
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
 
-        /* Full Screen Paywall Modal */
-        #paywall-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.95);
-            z-index: 50;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-            overflow-y: auto;
-        }
+    .input-group input:focus, .input-group select:focus {
+      outline: none;
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+    }
 
-        .paywall-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 800px;
-            text-align: center;
-        }
+    /* Granular Clause Toggles */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--graphite-border);
+    }
+    .toggle-row:last-child { border-bottom: none; }
 
-        .pricing-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
-        .tier { flex: 1; min-width: 220px; border: 2px solid var(--border-color); padding: 1.5rem; border-radius: 12px; }
-        .tier.pro { border-color: var(--brand); background: #eff6ff; position: relative; }
-        .tier-price { font-size: 2rem; font-weight: 700; margin: 1rem 0; }
-        .btn-stripe { background: #635bff; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block; width: 100%; box-sizing: border-box; }
+    .toggle-label { font-weight: 500; font-size: 0.9rem; color: var(--text-light); }
 
-        /* Trust & FAQ Block */
-        .seo-faq-block { max-width: 1000px; margin: 4rem auto; padding: 0 2rem; line-height: 1.6; }
-        .seo-faq-block h3 { color: var(--primary); }
-    </style>
+    /* Switch UI */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background-color: #334155; transition: .3s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px;
+      left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--brand-blue); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    /* Signature Tabs */
+    .sig-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .tab-btn {
+      flex: 1; padding: 0.5rem; background: #262c36; border: 1px solid var(--graphite-border);
+      color: var(--text-muted); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem;
+    }
+    .tab-btn.active { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
+
+    #signature-pad {
+      border: 1px dashed var(--graphite-border);
+      border-radius: 8px;
+      width: 100%;
+      height: 140px;
+      background: #ffffff;
+      touch-action: none;
+      cursor: crosshair;
+    }
+    #typed-sig-input { display: none; }
+
+    .btn-generate {
+      background: linear-gradient(135deg, var(--brand-blue), #1d4ed8);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 1.15rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      transition: transform 0.1s ease;
+      margin-top: 1rem;
+    }
+    .btn-generate:hover { transform: translateY(-2px); }
+
+    .btn-save-profile {
+      background: #242b35;
+      color: var(--text-light);
+      border: 1px solid var(--graphite-border);
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Right Panel - Live A4 Document Preview */
+    .preview-panel {
+      flex: 1.25;
+      padding: 2rem;
+      background: #0b0e11;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      box-shadow: inset 10px 0 20px rgba(0,0,0,0.5);
+    }
+
+    .a4-document {
+      background: #ffffff;
+      color: #0f172a;
+      width: 100%;
+      max-width: 794px;
+      min-height: 1123px; /* Standard A4 Paper Ratio */
+      padding: 3.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0, 0.7);
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+      border-radius: 2px;
+    }
+
+    /* Professional Anti-Screenshot Diagonal Watermark */
+    .watermark {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-35deg);
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: rgba(15, 23, 42, 0.08);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 10;
+      letter-spacing: 0.05em;
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .doc-logo img { max-width: 160px; max-height: 80px; object-fit: contain; }
+    .doc-title { font-size: 1.6rem; font-weight: 800; color: #0f172a; text-align: right; text-transform: uppercase; }
+
+    .doc-meta { margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6; }
+    .doc-section { margin-bottom: 1.75rem; }
+    .doc-section h3 { font-size: 1.05rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.4rem; margin-bottom: 0.75rem; color: #1e293b; text-transform: uppercase; }
+
+    ol.terms-list { padding-left: 1.25rem; margin: 0; }
+    ol.terms-list li { margin-bottom: 0.65rem; line-height: 1.5; font-size: 0.9rem; color: #334155; }
+
+    /* Payment Handles Block on Document */
+    .payment-embed-block {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .payment-badge-list { font-size: 0.85rem; font-weight: 600; color: #334155; }
+
+    /* Signature Render Block */
+    .signature-render-area {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .blank-sig-grid {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .blank-sig-col { width: 45%; font-size: 0.85rem; color: #334155; }
+    .blank-line { border-bottom: 1px solid #0f172a; height: 40px; margin-bottom: 0.3rem; }
+
+    .audit-trail {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      font-size: 0.75rem;
+      color: #475569;
+      font-family: monospace;
+    }
+
+    /* Mobile Takeover Paywall Modal */
+    #paywall-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 12, 15, 0.96);
+      z-index: 999;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .paywall-content {
+      background: #1c2128;
+      border: 1px solid var(--graphite-border);
+      padding: 2.5rem;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 850px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+    }
+
+    .paywall-content h2 { color: var(--soft-white-input); font-size: 1.8rem; margin-top: 0; }
+    .pricing-grid { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 2rem; }
+
+    .tier {
+      flex: 1; min-width: 230px; background: #12161c; border: 1px solid var(--graphite-border);
+      padding: 1.75rem; border-radius: 14px;
+      text-align: left; position: relative;
+    }
+
+    .tier.pro { border-color: var(--brand-blue); background: #182232; box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
+
+    .tier h3 { color: white; margin-top: 0; font-size: 1.2rem; }
+    .tier-price { font-size: 2.2rem; font-weight: 800; color: white; margin: 0.75rem 0; }
+
+    .btn-stripe {
+      background: #635bff; color: white;
+      padding: 0.85rem 1rem; text-decoration: none;
+      border-radius: 8px; font-weight: 700;
+      display: block; text-align: center; margin-top: 1rem;
+    }
+
+    /* SEO & Trust Footer Section */
+    .seo-faq-block {
+      max-width: 1100px;
+      margin: 4rem auto;
+      padding: 0 2rem 4rem 2rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+    }
+
+    .seo-faq-block h2 { color: white; font-size: 1.6rem; border-bottom: 1px solid var(--graphite-border); padding-bottom: 0.75rem; }
+    .seo-faq-block h3 { color: var(--soft-white-input); font-size: 1.15rem; margin-top: 1.75rem; }
+    .seo-faq-block p { font-size: 0.95rem; color: #94a3b8; }
+  </style>
 </head>
 <body>
 
-<div class="app-container">
-    
-    <!-- LEFT PANEL: Inputs -->
+  <!-- Flagship Header -->
+  <header class="brand-header">
+    <div class="brand-logo-text">
+      BuildWaivers
+      <span class="brand-badge">Mark II Engine</span>
+    </div>
+    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">
+      🔒 256-Bit SSL Enterprise Protection
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- LEFT PANEL: Form Controls -->
     <aside class="input-panel">
-        <div class="card">
-            <h2>1. Branding & Details</h2>
-            <div class="input-group">
-                <label>Company Logo</label>
-                <input type="file" id="logoUpload" accept="image/*">
-            </div>
-            <div class="input-group">
-                <label>Your Business Name</label>
-                <input type="text" id="bizName" placeholder="e.g. Apex Mechanical LLC">
-            </div>
-            <div class="input-group">
-                <label>Client Name</label>
-                <input type="text" id="clientName" placeholder="e.g. John Doe">
-            </div>
-            <div class="input-group">
-                <label>Job Site Address</label>
-                <input type="text" id="jobAddress" placeholder="1234 Main St, Saint Paul, MN 55106">
-            </div>
-        </div>
 
-        <div class="card">
-            <h2>2. Standard Legal Safeguards</h2>
-            <div class="toggle-row">
-                <span class="toggle-label">Late Payment Fee (1.5%/mo)</span>
-                <input type="checkbox" id="toggleLate" checked>
-            </div>
-            <div class="toggle-row">
-                <span class="toggle-label">Upfront Deposit (50%)</span>
-                <input type="checkbox" id="toggleDeposit" checked>
-            </div>
-            <div class="toggle-row">
-                <span class="toggle-label">Scope Creep Protection</span>
-                <input type="checkbox" id="toggleScope" checked>
-            </div>
-            <div class="toggle-row">
-                <span class="toggle-label">IP Ownership Retention</span>
-                <input type="checkbox" id="toggleIP" checked>
-            </div>
+      <!-- Form Selector -->
+      <div class="card">
+        <h2>
+          1. Select Legal Framework
+          <button class="btn-save-profile" onclick="saveProfileToStorage()">💾 Save Pro Profile</button>
+        </h2>
+        <div class="input-group">
+          <label>Document Template Type</label>
+          <select id="templateSelect" onchange="updateFormTemplate()">
+            <option value="general">1. General Service & Trade Agreement</option>
+            <option value="scope">2. Scope Change Order Form</option>
+            <option value="damage">3. Liability & Pre-Existing Damage Waiver</option>
+            <option value="lien">4. Mechanic's Lien Release & Payment Waiver</option>
+            <option value="emergency">5. Emergency Service Work Order & Authorization</option>
+            <option value="indemnity">6. Subcontractor Hold Harmless & Indemnity</option>
+            <option value="vehicle">7. Vehicle & Heavy Equipment Repair Authorization</option>
+            <option value="maintenance">8. Property Maintenance & Seasonal Agreement</option>
+          </select>
         </div>
+      </div>
 
-        <div class="card">
-            <h2>3. Client Signature</h2>
+      <!-- Business & Client Details -->
+      <div class="card">
+        <h2>2. Business & Client Information</h2>
+        <div class="input-group">
+          <label>Upload Company Logo (Tease Feature)</label>
+          <input type="file" id="logoUpload" accept="image/*">
+        </div>
+        <div class="input-group">
+          <label>Your Business Name</label>
+          <input type="text" id="bizName" placeholder="e.g. Apex Mechanical LLC">
+        </div>
+        <div class="input-group">
+          <label>Client Full Name</label>
+          <input type="text" id="clientName" placeholder="e.g. John Doe">
+        </div>
+        <div class="input-group">
+          <label>Job Site Address (Ghost Text Spec)</label>
+          <input type="text" id="jobAddress" placeholder="1234 Main St, Saint Paul, MN 55106">
+        </div>
+        <div class="input-group">
+          <label>Payment Handles (Venmo / Zelle / CashApp / PayPal / Stripe)</label>
+          <input type="text" id="paymentHandle" placeholder="e.g. Venmo: @Apex-Mechanical | Zelle: 651-555-0199">
+        </div>
+      </div>
+
+      <!-- Granular Legal Clause Toggles -->
+      <div class="card">
+        <h2>3. Dynamic Safeguard Clauses</h2>
+        <div class="toggle-row">
+          <span class="toggle-label">Late Payment Penalty (1.5%/month)</span>
+          <label class="switch"><input type="checkbox" id="toggleLate" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Upfront Deposit Requirement (50%)</span>
+          <label class="switch"><input type="checkbox" id="toggleDeposit" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Scope Creep Billing Protection</span>
+          <label class="switch"><input type="checkbox" id="toggleScope" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">IP & Property Ownership Retention</span>
+          <label class="switch"><input type="checkbox" id="toggleIP" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Pre-Existing Condition Immunity</span>
+          <label class="switch"><input type="checkbox" id="toggleDamage" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Limited Warranty Terms (90 Days)</span>
+          <label class="switch"><input type="checkbox" id="toggleWarranty" checked><span class="slider"></span></label>
+        </div>
+      </div>
+
+      <!-- Signature Requirements Toggle & Input Pad -->
+      <div class="card">
+        <h2>
+          4. Signature Configuration
+          <label class="switch" title="Toggle On for E-Sign, Toggle Off for Print Blank Lines"><input type="checkbox" id="toggleRequireSig" checked onchange="toggleSignatureRequirement()"><span class="slider"></span></label>
+        </h2>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top:-0.5rem; margin-bottom:1rem;">
+          Toggle ON to capture digital e-signature. Toggle OFF to render blank signature lines for physical print.
+        </p>
+
+        <div id="interactive-sig-block">
+          <div class="sig-tabs">
+            <button class="tab-btn active" onclick="setSigTab('draw')">Draw Signature</button>
+            <button class="tab-btn" onclick="setSigTab('type')">Type Signature</button>
+          </div>
+
+          <div id="draw-sig-container">
             <canvas id="signature-pad"></canvas>
-            <p style="font-size: 0.8rem; color: #64748b;">Sign in box above to verify agreement.</p>
+          </div>
+
+          <div id="typed-sig-container" style="display:none;">
+            <div class="input-group">
+              <input type="text" id="typedSigInput" placeholder="Type full name for cursive stamp" oninput="updateTypedSignature()">
+            </div>
+          </div>
         </div>
 
-        <button class="btn-primary" onclick="triggerPaywall()">Generate Document 🔒</button>
+        <button class="btn-generate" onclick="triggerPaywall()">Generate Final Document 🔒</button>
         <div style="text-align: center; margin-top: 1rem;">
-            <small>🔒 Secure 256-bit SSL Encryption<br>Payments processed securely by Stripe</small>
+          <small style="color: var(--text-muted);">
+            🔒 256-Bit SSL Encryption | Payments Processed by Stripe
+          </small>
         </div>
+      </div>
     </aside>
 
-    <!-- RIGHT PANEL: Live Document -->
+    <!-- RIGHT PANEL: Live A4 Document Preview -->
     <main class="preview-panel">
-        <div class="a4-document" id="liveDoc">
-            <div class="watermark">UNPAID PREVIEW - INVALID FOR LEGAL USE</div>
-            
-            <div class="doc-header">
-                <div class="doc-logo" id="docLogoRender"></div>
-                <div class="doc-title">SERVICE AGREEMENT</div>
-            </div>
+      <div class="a4-document" id="liveDoc">
+        <div class="watermark">UNPAID PREVIEW - INVALID FOR LEGAL USE</div>
 
-            <div class="doc-meta">
-                <strong>Contractor:</strong> <span id="outBizName">[Business Name]</span><br>
-                <strong>Client:</strong> <span id="outClientName">[Client Name]</span><br>
-                <strong>Job Site:</strong> <span id="outJobAddress">[Job Site Address]</span><br>
-                <strong>Date:</strong> <span id="outDate"></span>
-            </div>
-
-            <div class="doc-section">
-                <h3>Terms & Conditions</h3>
-                <ol id="dynamicTermsList">
-                    <!-- Dynamic terms populate here -->
-                </ol>
-            </div>
-
-            <div class="audit-trail">
-                <strong>E-Signature Audit Trail</strong><br>
-                Signature Canvas ID: <span id="sigId">Pending...</span><br>
-                Timestamp: <span id="sigTime">Pending...</span>
-            </div>
+        <div class="doc-header">
+          <div class="doc-logo" id="docLogoRender"></div>
+          <div class="doc-title" id="outDocTitle">GENERAL SERVICE & TRADE AGREEMENT</div>
         </div>
+
+        <div class="doc-meta">
+          <strong>Contracting Party:</strong> <span id="outBizName">[Business Name]</span><br>
+          <strong>Client / Property Owner:</strong> <span id="outClientName">[Client Name]</span><br>
+          <strong>Job Site Location:</strong> <span id="outJobAddress">1234 Main St, Saint Paul, MN 55106</span><br>
+          <strong>Effective Execution Date:</strong> <span id="outDate"></span>
+        </div>
+
+        <div class="doc-section">
+          <h3>Terms & Binding Provisions</h3>
+          <ol class="terms-list" id="dynamicTermsList">
+            <!-- Dynamic legal terms populate here -->
+          </ol>
+        </div>
+
+        <div class="payment-embed-block" id="paymentEmbedBlock">
+          <strong>Instant Payment Link & QR Request:</strong> <span id="outPaymentHandle" style="font-size: 0.85rem; color: #475569;">[Payment Handle Pending]</span>
+          <div class="payment-badge-list">
+            Accepted: Apple Pay | Google Pay | Venmo | CashApp | Zelle | Stripe
+          </div>
+        </div>
+
+        <!-- Signature Display Area -->
+        <div class="signature-render-area">
+          <div id="render-digital-sig">
+            <strong>Authorized Signature & Electronic Consent:</strong>
+            <div id="sigGraphicOutput" style="margin-top: 0.5rem; min-height: 50px;"></div>
+            <div class="audit-trail">
+              <strong>E-SIGNATURE DIGITAL AUDIT TRAIL</strong><br>
+              Signer Name: <span id="auditName">Pending...</span><br>
+              Signature ID: <span id="sigId">BW-SIG-PENDING</span> | Date/Time: <span id="sigTime">Pending...</span>
+            </div>
+          </div>
+
+          <div id="render-blank-sig" style="display:none;">
+            <div class="blank-sig-grid">
+              <div class="blank-sig-col">
+                <div class="blank-line"></div>
+                <strong>Contractor Representative Signature</strong><br>
+                Date: ____________________
+              </div>
+              <div class="blank-sig-col">
+                <div class="blank-line"></div>
+                <strong>Client / Property Owner Signature</strong><br>
+                Date: ____________________
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </main>
-</div>
+  </div>
 
-<!-- SEO & FAQ BLOCK -->
-<section class="seo-faq-block">
-    <h3>Built to Protect the Trades.</h3>
-    <p>As contractors, one unpaid change order or false property damage claim can wipe out weeks of profit. BuildWaivers is a self-service software and template generator designed to help active tradespeople, mechanics, and mobile service pros look professional and protect their margins. Stop risking high-value jobs on unreadable templates. Generate a polished, professional agreement in seconds.</p>
+  <!-- SEO & FAQ BLOCK -->
+  <section class="seo-faq-block">
+    <h2>Built to Protect Active Field Trades & Contractors.</h2>
+    <p>
+      As independent contractors, one unpaid scope change order or false pre-existing property damage claim can completely wipe out weeks of hard-earned profit. BuildWaivers is a self-serve software and template generator designed to help active tradespeople, mechanics, and mobile service pros look professional, secure upfront deposits, and protect their business margins. Stop risking high-value jobs on unreadable generic forms. Generate a polished, legal agreement in seconds.
+    </p>
 
-    <h3>Frequently Asked Questions</h3>
-    
-    <strong>Do I need a monthly subscription to use this?</strong>
-    <p>No. While we offer a Pro Operator Monthly plan for active tradespeople, casual users can generate a single export for a flat $8.99. It’s a negligible business expense to protect a high-value job.</p>
+    <h2>Frequently Asked Questions</h2>
 
-    <strong>Why shouldn't I just use a standard basic template?</strong>
-    <p>A generic template often lacks critical job-site protections like pre-existing damage waivers or scope creep protection. One unpaid change order costs $1,500+. Protect this job instantly for just $8.99 instead of risking your margins.</p>
+    <h3>Do I need a monthly subscription to use BuildWaivers?</h3>
+    <p>No. While we offer a Pro Operator Monthly plan for active tradespeople who need unlimited exports and saved business profiles, casual users can generate a single export for a flat $8.99. It is a negligible, deductible business expense to protect a high-value job.</p>
 
-    <strong>What types of trades use BuildWaivers?</strong>
-    <p>Our contractor contract generator is used across all field services. We provide specialized frameworks including the exterior painting agreement template, HVAC client liability waiver generator, mobile detailing pre-inspection form PDF, and mechanic work orders.</p>
+    <h3>Why shouldn't I just use a standard basic template?</h3>
+    <p>A generic template often lacks critical job-site protections like pre-existing damage waivers or scope creep billing protection. One unpaid change order costs $1,500+. Protect this job instantly for just $8.99 instead of risking your profit margins.</p>
 
-    <strong>Are these documents legally binding?</strong>
+    <h3>What types of trades use BuildWaivers?</h3>
+    <p>
+      Our contractor contract generator is used across all field and mobile service industries, including:
+      <br><br>
+      <strong>Residential Trade Subcontractors:</strong> General Contractors, Exterior & Interior Painters, HVAC Technicians, Electricians, Plumbers, Roofers, Landscapers, Handymen, Masons, Carpenters, Drywallers, Lawn Care & Snow Removal Operators.<br>
+      <strong>Automotive & Heavy Machinery:</strong> Mechanics, Mobile Auto Detailers, Towing Operators, Mobile Oil & Tire Techs, Heavy Equipment Repair Operators.<br>
+      <strong>Mobile Service Pros:</strong> Pressure Washers, Window Cleaners, Pest Control Techs, Appliance Repair Specialists, Pet Groomers.<br>
+      <strong>Freelance Creatives:</strong> Video Editors, Web Developers, Graphic Designers, Photographers, Mobile Vendors.
+    </p>
+
+    <h3>Are these documents legally binding?</h3>
     <p>BuildWaivers provides self-service software and template generator software; we are not a law firm and do not provide legal advice. While our templates include standard business protections (like late payment fees and IP retention clauses), no software can guarantee court enforceability. If you require legal advice or guaranteed enforceability for your specific state, you must consult a licensed attorney.</p>
 
-    <strong>How do I get a refund if I need one?</strong>
+    <h3>How do I get a refund if I need one?</h3>
     <p>Refunds are fast and self-serve. You can request a refund directly through the Stripe payment receipt emailed to you immediately after your purchase. Simply open the receipt and follow the link to manage your order.</p>
-</section>
+  </section>
 
-<!-- HARD PAYWALL MODAL -->
-<div id="paywall-modal">
+  <!-- FULL SCREEN MOBILE TAKEOVER PAYWALL MODAL -->
+  <div id="paywall-modal">
     <div class="paywall-content">
-        <h2>Download Your Agreement</h2>
-        <p>Your document is ready. Choose a tier below to remove the watermark and download a legally binding PDF.</p>
-        
-        <div class="pricing-grid">
-            <div class="tier">
-                <h3>Single Export</h3>
-                <div class="tier-price">$8.99</div>
-                <p>Standard PDF (Logo removed)</p>
-                <!-- Hardcoded Stripe Link -->
-                <a href="https://buy.stripe.com/test_1" class="btn-stripe">Buy Once</a>
-            </div>
-            
-            <div class="tier pro">
-                <div style="position:absolute; top:-15px; left:50%; transform:translateX(-50%); background:#2563eb; color:white; padding:2px 10px; border-radius:10px; font-size:0.8rem;">BEST VALUE</div>
-                <h3>Pro Monthly</h3>
-                <div class="tier-price">$14.99<small>/mo</small></div>
-                <p>Premium PDF (Keep your Custom Logo & Save Profile)</p>
-                <a href="https://buy.stripe.com/test_2" class="btn-stripe">Subscribe</a>
-            </div>
+      <h2>Unlock Your Unwatermarked PDF Document</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Your agreement is compiled and ready. Select an export option below to clear the watermark and download a print-ready document.
+      </p>
 
-            <div class="tier">
-                <h3>Pro Annual</h3>
-                <div class="tier-price">$99<small>/yr</small></div>
-                <p>All Pro features. Steep discount.</p>
-                <a href="https://buy.stripe.com/test_3" class="btn-stripe">Save Now</a>
-            </div>
+      <div class="pricing-grid">
+        <div class="tier">
+          <h3>Single Export</h3>
+          <div class="tier-price">$8.99<small>/doc</small></div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">Standard PDF Generation<br><em>(Custom Logo Removed)</em></p>
+          <a href="#" class="btn-stripe">Buy Single Export</a>
         </div>
-        <p style="margin-top: 2rem; font-size: 0.85rem; color: #64748b;">Payments processed securely by Stripe | Apple Pay | Google Pay | Venmo | PayPal</p>
-        <button onclick="closePaywall()" style="background:none; border:none; color:#64748b; margin-top:1rem; cursor:pointer; text-decoration:underline;">Cancel</button>
+
+        <div class="tier pro">
+          <div style="position:absolute; top:-12px; right:15px; background:var(--brand-blue); color:white; padding:2px 10px; border-radius:10px; font-size:0.75rem; font-weight:800;">POPULAR</div>
+          <h3>Pro Monthly</h3>
+          <div class="tier-price">$14.99<small style="font-size:1rem;">/mo</small></div>
+          <p style="font-size:0.85rem; color:#cbd5e1;">Unlimited PDF Exports<br><strong>Keep Custom Logo & Auto-Save Profile</strong></p>
+          <a href="#" class="btn-stripe">Subscribe Monthly</a>
+        </div>
+
+        <div class="tier">
+          <h3>Pro Annual</h3>
+          <div class="tier-price">$99<small style="font-size:1rem;">/yr</small></div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">All Pro Features Included<br><strong>Steep Discount ($8.25/mo equivalent)</strong></p>
+          <a href="#" class="btn-stripe">Claim Annual Savings</a>
+        </div>
+      </div>
+      <p style="margin-top: 2rem; font-size: 0.8rem; color: var(--text-muted);">
+        🔒 Payments Processed Securely by Stripe | Apple Pay | Google Pay | Venmo | PayPal | Zelle
+      </p>
+      <button onclick="closePaywall()" style="background:none; border:none; color:var(--text-muted); margin-top:1rem; cursor:pointer; text-decoration:underline; font-weight:600;">Back to Editor</button>
     </div>
-</div>
+  </div>
 
-<script>
-    // 1. Data Mapping & Real-Time Updates
-    const inputs = ['bizName', 'clientName', 'jobAddress'];
-    inputs.forEach(id => {
-        document.getElementById(id).addEventListener('input', function(e) {
-            const val = e.target.value || `[${e.target.placeholder}]`;
-            document.getElementById('out' + id.charAt(0).toUpperCase() + id.slice(1)).innerText = val;
-        });
+  <script>
+    // 1. Form Template Definitions (8 Core Forms)
+    const templates = {
+      general: {
+        title: "GENERAL SERVICE & TRADE AGREEMENT",
+        terms: [
+          "Scope of Work: Contractor agrees to perform specified trade services according to standard industry practices.",
+          "Payment Terms: Payment is due upon completion of milestone deliverables or invoice presentation."
+        ]
+      },
+      scope: {
+        title: "SCOPE CHANGE ORDER FORM",
+        terms: [
+          "Additional Scope: Client requests additional work, labor, or materials beyond original contract agreement.",
+          "Cost Adjustment: Additional labor billed at standard hourly rates plus material costs."
+        ]
+      },
+      damage: {
+        title: "LIABILITY & PRE-EXISTING DAMAGE WAIVER",
+        terms: [
+          "Pre-Existing Property Inspection: Contractor is not liable for structural defects, water intrusion, or pre-existing damage existing prior to work.",
+          "Site Immunity: Client assumes financial responsibility for non-contractor structural issues."
+        ]
+      },
+      lien: {
+        title: "MECHANIC'S LIEN RELEASE & PAYMENT WAIVER",
+        terms: [
+          "Conditional Release: Contractor waives lien rights upon receipt and clearance of designated payment.",
+          "Payment Clearance: Release is null and void if client payment is returned or disputed."
+        ]
+      },
+      emergency: {
+        title: "EMERGENCY SERVICE WORK ORDER & AUTHORIZATION",
+        terms: [
+          "Immediate Call-Out: Client authorizes immediate diagnostic and mitigation services at emergency call-out rates.",
+          "Risk Assumption: Client acknowledges risk inherent in emergency structural or utility stabilization."
+        ]
+      },
+      indemnity: {
+        title: "SUBCONTRACTOR HOLD HARMLESS & INDEMNITY",
+        terms: [
+          "Indemnification: Subcontractor agrees to defend and hold prime contractor harmless from site liabilities caused by subcontractor crew.",
+          "Insurance Requirement: Subcontractor maintains independent commercial general liability coverage."
+        ]
+      },
+      vehicle: {
+        title: "VEHICLE & HEAVY EQUIPMENT REPAIR AUTHORIZATION",
+        terms: [
+          "Repair Authorization: Customer authorizes diagnostic testing, teardown, and test driving of vehicle/equipment.",
+          "Storage Fees: Equipment left over 48 hours post-completion incurs a $50/day storage fee."
+        ]
+      },
+      maintenance: {
+        title: "PROPERTY MAINTENANCE & SEASONAL AGREEMENT",
+        terms: [
+          "Seasonal Services: Contractor provides recurring property maintenance per agreed seasonal schedule.",
+          "Utility Waiver: Contractor is not responsible for hidden underground irrigation lines or un-marked utilities."
+        ]
+      }
+    };
+
+    // 2. Form Mapping & Text Mirroring
+    const inputIds = ['bizName', 'clientName', 'jobAddress', 'paymentHandle'];
+    inputIds.forEach(id => {
+      document.getElementById(id).addEventListener('input', updateDocMeta);
     });
 
-    // Set Date
-    document.getElementById('outDate').innerText = new Date().toLocaleDateString();
+    function updateDocMeta() {
+      document.getElementById('outBizName').innerText = document.getElementById('bizName').value || '[Business Name]';
+      document.getElementById('outClientName').innerText = document.getElementById('clientName').value || '[Client Name]';
+      document.getElementById('outJobAddress').innerText = document.getElementById('jobAddress').value || '1234 Main St, Saint Paul, MN 55106';
+      document.getElementById('outPaymentHandle').innerText = document.getElementById('paymentHandle').value || '[Payment Handle Pending]';
+      document.getElementById('outDate').innerText = new Date().toLocaleDateString();
+    }
 
-    // 2. Logo Upload Logic (The Tease)
+    // 3. Template Switcher
+    function updateFormTemplate() {
+      const type = document.getElementById('templateSelect').value;
+      document.getElementById('outDocTitle').innerText = templates[type].title;
+      renderTerms();
+    }
+
+    // 4. Logo Upload Logic (Endowment Tease)
     document.getElementById('logoUpload').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('docLogoRender').innerHTML = `<img src="${event.target.result}" alt="Company Logo">`;
-            }
-            reader.readAsDataURL(file);
-        }
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          document.getElementById('docLogoRender').innerHTML = `<img src="${event.target.result}" alt="Company Logo">`;
+        };
+        reader.readAsDataURL(file);
+      }
     });
 
-    // 3. Dynamic Section Restructuring
-    const clauses = {
-        'toggleLate': "Late Payment Fee: Balances unpaid after 30 days are subject to a 1.5% monthly late fee.",
-        'toggleDeposit': "Deposit Requirement: A 50% non-refundable deposit is required before commencement of work.",
-        'toggleScope': "Scope Creep Protection: Revisions outside the initial scope will be billed at standard hourly rates.",
-        'toggleIP': "IP Ownership: Work rights and property ownership remain with the contractor until paid in full."
+    // 5. Granular Clauses & Dynamic Renumbering Engine
+    const optionalClauses = {
+      'toggleLate': "Late Payment Penalty: Unpaid balances after 30 days incur a 1.5% monthly late fee.",
+      'toggleDeposit': "Upfront Deposit: A 50% non-refundable deposit is required prior to project mobilization.",
+      'toggleScope': "Scope Creep Protection: Unforeseen work or extra revisions will be billed at standard hourly rates.",
+      'toggleIP': "IP & Property Ownership: Intellectual property, tools, and work rights remain contractor property until paid in full.",
+      'toggleDamage': "Pre-Existing Damage Immunity: Contractor is not liable for pre-existing structural, cosmetic, or mechanical defects.",
+      'toggleWarranty': "Limited Warranty: Workmanship is covered under a 90-day limited repair warranty post-completion."
     };
 
     function renderTerms() {
-        const list = document.getElementById('dynamicTermsList');
-        list.innerHTML = '';
-        Object.keys(clauses).forEach(id => {
-            if(document.getElementById(id).checked) {
-                const li = document.createElement('li');
-                li.innerText = clauses[id];
-                list.appendChild(li);
-            }
-        });
+      const list = document.getElementById('dynamicTermsList');
+      list.innerHTML = '';
+
+      // Render Base Template Terms
+      const currentType = document.getElementById('templateSelect').value;
+      templates[currentType].terms.forEach(term => {
+        const li = document.createElement('li');
+        li.innerText = term;
+        list.appendChild(li);
+      });
+
+      // Render Active Optional Toggles
+      Object.keys(optionalClauses).forEach(id => {
+        if(document.getElementById(id).checked) {
+          const li = document.createElement('li');
+          li.innerText = optionalClauses[id];
+          list.appendChild(li);
+        }
+      });
     }
 
-    // Attach listeners to toggles
-    Object.keys(clauses).forEach(id => {
-        document.getElementById(id).addEventListener('change', renderTerms);
+    Object.keys(optionalClauses).forEach(id => {
+      document.getElementById(id).addEventListener('change', renderTerms);
     });
-    renderTerms(); // Init
+    renderTerms(); // Init Terms
 
-    // 4. HTML5 Signature Pad
+    // 6. Signature Modes & Touch/Mouse Canvas
+    function toggleSignatureRequirement() {
+      const required = document.getElementById('toggleRequireSig').checked;
+      document.getElementById('interactive-sig-block').style.display = required ? 'block' : 'none';
+      document.getElementById('render-digital-sig').style.display = required ? 'block' : 'none';
+      document.getElementById('render-blank-sig').style.display = required ? 'none' : 'block';
+    }
+
+    function setSigTab(tab) {
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons[0].classList.toggle('active', tab === 'draw');
+      buttons[1].classList.toggle('active', tab === 'type');
+      document.getElementById('draw-sig-container').style.display = tab === 'draw' ? 'block' : 'none';
+      document.getElementById('typed-sig-container').style.display = tab === 'type' ? 'block' : 'none';
+    }
+
+    // HTML5 Touch Canvas Setup
     const canvas = document.getElementById('signature-pad');
     const ctx = canvas.getContext('2d');
     let isDrawing = false;
-
-    // Responsive canvas
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
     function startDraw(e) { isDrawing = true; draw(e); }
-    function endDraw() { isDrawing = false; ctx.beginPath(); document.getElementById('sigId').innerText = "Verified " + Math.random().toString(36).substr(2, 9).toUpperCase(); document.getElementById('sigTime').innerText = new Date().toLocaleString(); }
-    function draw(e) {
-        if (!isDrawing) return;
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#0f172a';
-        
-        let x = e.clientX || (e.touches && e.touches[0].clientX);
-        let y = e.clientY || (e.touches && e.touches[0].clientY);
-        const rect = canvas.getBoundingClientRect();
-        x -= rect.left; y -= rect.top;
+    function endDraw() {
+      if(!isDrawing) return;
+      isDrawing = false;
+      ctx.beginPath();
+      const name = document.getElementById('clientName').value || 'Authorized Client';
+      updateAuditStamp(name, 'DRAWN_CANVAS');
+    }
 
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(x, y);
+    function draw(e) {
+      if (!isDrawing) return;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = '#0f172a';
+      let x = e.clientX || (e.touches && e.touches[0].clientX);
+      let y = e.clientY || (e.touches && e.touches[0].clientY);
+      const rect = canvas.getBoundingClientRect();
+      x -= rect.left;
+      y -= rect.top;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
     }
 
     canvas.addEventListener('mousedown', startDraw);
@@ -446,15 +841,51 @@
     canvas.addEventListener('touchmove', draw);
     canvas.addEventListener('touchend', endDraw);
 
-    // 5. Paywall Logic
+    function updateTypedSignature() {
+      const typedVal = document.getElementById('typedSigInput').value;
+      const outGraphic = document.getElementById('sigGraphicOutput');
+      outGraphic.innerHTML = `<span style="font-family:'Dancing Script', cursive; font-size:2rem; color:#0f172a;">${typedVal}</span>`;
+      updateAuditStamp(typedVal || 'Authorized Client', 'TYPED_CURSIVE');
+    }
+
+    function updateAuditStamp(signerName, type) {
+      document.getElementById('auditName').innerText = `${signerName} (${type})`;
+      document.getElementById('sigId').innerText = "BW-SIG-" + Math.random().toString(36).substr(2, 8).toUpperCase();
+      document.getElementById('sigTime').innerText = new Date().toLocaleString();
+    }
+
+    // 7. Browser LocalStorage (Pro Profile)
+    function saveProfileToStorage() {
+      const profile = {
+        bizName: document.getElementById('bizName').value,
+        jobAddress: document.getElementById('jobAddress').value,
+        paymentHandle: document.getElementById('paymentHandle').value
+      };
+      localStorage.setItem('bw_pro_profile', JSON.stringify(profile));
+      alert('Pro Profile Saved! Your business info will auto-populate on return visits.');
+    }
+
+    function loadProfileFromStorage() {
+      const saved = localStorage.getItem('bw_pro_profile');
+      if(saved) {
+        const profile = JSON.parse(saved);
+        if(profile.bizName) document.getElementById('bizName').value = profile.bizName;
+        if(profile.jobAddress) document.getElementById('jobAddress').value = profile.jobAddress;
+        if(profile.paymentHandle) document.getElementById('paymentHandle').value = profile.paymentHandle;
+        updateDocMeta();
+      }
+    }
+    window.onload = loadProfileFromStorage;
+
+    // 8. Paywall Logic
     function triggerPaywall() {
-        trackPaywallTrigger(); // Fire Analytics Event
-        document.getElementById('paywall-modal').style.display = 'flex';
+      trackPaywallTrigger(); // Triggers Google Analytics / PostHog Paywall Event
+      document.getElementById('paywall-modal').style.display = 'flex';
     }
-    
+
     function closePaywall() {
-        document.getElementById('paywall-modal').style.display = 'none';
+      document.getElementById('paywall-modal').style.display = 'none';
     }
-</script>
+  </script>
 </body>
 </html>
